@@ -1,6 +1,9 @@
-﻿namespace Blog.Models
+﻿using Microsoft.AspNetCore.Identity;
+
+namespace Blog.Models
 {
-    public class ApplicationUser
+    public class ApplicationUser : IdentityUser
     {
+        public string FullName { get; set; }
     }
 }

@@ -3,7 +3,6 @@ using Blog.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,8 +14,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<AppDbContext>(option =>
-option.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"),
-    new MySqlServerVersion(new Version(8, 0, 41)))); 
+option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 {
@@ -50,7 +48,8 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAuthorizationBuilder()
     .AddPolicy("AdminPolicy", policy => policy.RequireRole("Admin"))
-    .AddPolicy("UserPolicy", policy => policy.RequireRole("User"));
+    .AddPolicy("BloggerPolicy", policy => policy.RequireRole("Blogger"))
+    .AddPolicy("SubscriberPolicy", policy => policy.RequireRole("Subscriber"));
 
 var app = builder.Build();
 
